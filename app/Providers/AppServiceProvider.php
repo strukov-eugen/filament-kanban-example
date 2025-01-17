@@ -3,6 +3,11 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Filament\Facades\Filament;
+use Filament\View\PanelsRenderHook;
+use Livewire\Livewire;
+use App\Filament\Pages\TasksKanbanBoard;
+use Livewire\LivewireManager;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +24,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Filament::serving(function () {
+            Filament::registerRenderHook(PanelsRenderHook::TOPBAR_START, function () {
+                return Livewire::mount('counter');
+            });
+        });
+
+        // После создания объекта передаем зависимость LivewireManager
+        /*app()->resolving(TasksKanbanBoard::class, function ($tasksKanbanBoard, $app) {
+            $tasksKanbanBoard->setLivewireManager($app->make(LivewireManager::class));
+        });*/
     }
 }

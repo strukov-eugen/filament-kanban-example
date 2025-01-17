@@ -22,6 +22,11 @@ class RolesKanbanBoard extends KanbanBoard
 
     protected static string $statusEnum = UserRole::class;
 
+    public static function shouldRegisterNavigation(): bool
+    {
+        return false; // Убирает страницу из навигации
+    }
+
     protected function records(): Collection
     {
         return User::where('status', UserStatus::Active)->ordered()->get();
